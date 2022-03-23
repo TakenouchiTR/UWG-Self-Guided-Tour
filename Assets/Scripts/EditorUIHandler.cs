@@ -6,10 +6,17 @@ using TMPro;
 using System.Linq;
 using SimpleFileBrowser;
 
+/// <summary>
+///     Handles the UI interactions in the POIEditor scene.<br />
+///     <br />
+///     Author: Shawn Carter<br />
+///     Version: Spring 2022
+/// </summary>
 public class EditorUIHandler : MonoBehaviour
 {
     private int currentIndex;
     private List<PointOfInterest> pointsOfInterest;
+    private bool hasUpdate;
 
     [SerializeField]
     private TMP_InputField inp_currentPoi;
@@ -31,6 +38,7 @@ public class EditorUIHandler : MonoBehaviour
     private TMP_InputField inp_pictures;
 
     private PointOfInterest CurrentPointOfInterest => pointsOfInterest[currentIndex];
+
     private int PointOfInterestCount => this.pointsOfInterest.Count;
 
     void Start()
@@ -38,6 +46,26 @@ public class EditorUIHandler : MonoBehaviour
         this.pointsOfInterest = new List<PointOfInterest>();
         this.pointsOfInterest.Add(new PointOfInterest());
         UpdateUI();
+    }
+
+    void Update()
+    {
+        if (Input.mouseScrollDelta.y > 0 && this.currentIndex > 0)
+        {
+            if (this.hasUpdate)
+            {
+                this.UpdateCurrentPointOfInteret();
+            }
+            this.ChangeCurrentIndex(currentIndex - 1);
+        }
+        else if (Input.mouseScrollDelta.y < 0 && this.currentIndex < this.PointOfInterestCount - 1)
+        {
+            if (this.hasUpdate)
+            {
+                this.UpdateCurrentPointOfInteret();
+            }
+            this.ChangeCurrentIndex(currentIndex + 1);
+        }
     }
 
     private void UpdateUI()
@@ -51,6 +79,18 @@ public class EditorUIHandler : MonoBehaviour
         this.inp_description.text = this.CurrentPointOfInterest.Description;
         this.inp_previewDescription.text = this.CurrentPointOfInterest.PreviewDescription;
         this.inp_pictures.text = this.CurrentPointOfInterest.JoinedImageLinks;
+    }
+
+    private void UpdateCurrentPointOfInteret()
+    {
+        this.CurrentPointOfInterest.Name = this.inp_PoiName.text;
+        this.CurrentPointOfInterest.Latitude = double.Parse(this.inp_latitude.text);
+        this.CurrentPointOfInterest.Longitude = double.Parse(this.inp_longitude.text);
+        this.CurrentPointOfInterest.HasARTarget = this.tog_hasARTarget.isOn;
+        this.CurrentPointOfInterest.Description = this.inp_description.text;
+        this.CurrentPointOfInterest.PreviewDescription = this.inp_previewDescription.text;
+        this.CurrentPointOfInterest.ImageLinks = this.GetImageLocationsFromTextbox();
+        this.hasUpdate = false;
     }
 
     private List<string> GetImageLocationsFromTextbox()
@@ -141,13 +181,12 @@ public class EditorUIHandler : MonoBehaviour
 
     public void OnPoiInfoUpdated()
     {
-        this.CurrentPointOfInterest.Name = this.inp_PoiName.text;
-        this.CurrentPointOfInterest.Latitude = double.Parse(this.inp_latitude.text);
-        this.CurrentPointOfInterest.Longitude = double.Parse(this.inp_longitude.text);
-        this.CurrentPointOfInterest.HasARTarget = this.tog_hasARTarget.isOn;
-        this.CurrentPointOfInterest.Description = this.inp_description.text;
-        this.CurrentPointOfInterest.PreviewDescription = this.inp_previewDescription.text;
-        this.CurrentPointOfInterest.ImageLinks = this.GetImageLocationsFromTextbox();
+        this.UpdateCurrentPointOfInteret();
+    }
+
+    public void OnPoiInfoSelected()
+    {
+        this.hasUpdate = true;
     }
 
     public void OnCurrentPoiEndEdit(string text)

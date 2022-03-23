@@ -1,10 +1,23 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using UnityEngine;
 
+/// <summary>
+///     Reads a list of <see cref="PointOfInterest"/> from a specified file location.<br />
+///     <br />
+///     Author: Shawn Carter<br />
+///     Version: Spring 2022
+/// </summary>
 public static class POIReader
 {
+    /// <summary>
+    ///     Reads a list of <see cref="PointOfInterest"/> from a specified file location.<br />
+    ///     <br />
+    ///     Precondition: None<br />
+    ///     Postcondition: None
+    /// </summary>
+    /// <param name="fileLocation">The file location.</param>
+    /// <returns>The list of <see cref="PointOfInterest"/> stored in the file.</returns>
+    /// <exception cref="System.IO.FileNotFoundException"></exception>
     public static List<PointOfInterest> ReadFile(string fileLocation)
     {
         if (!File.Exists(fileLocation))
