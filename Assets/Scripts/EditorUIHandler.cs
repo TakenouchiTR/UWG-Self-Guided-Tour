@@ -77,14 +77,12 @@ public class EditorUIHandler : MonoBehaviour
 
     private void RemoveCurrentPointOfInterest()
     {
-        if (this.PointOfInterestCount == 1)
-        {
-            Debug.LogError("Cannot remove the last PointOfInterest.");
-            return;
-        }
-
         this.pointsOfInterest.RemoveAt(currentIndex);
-        if (this.currentIndex == this.PointOfInterestCount)
+        if (this.PointOfInterestCount == 0)
+        {
+            this.AddNewPointOfInterest();
+        }
+        else if (this.currentIndex == this.PointOfInterestCount)
         {
             this.currentIndex--;
         }
