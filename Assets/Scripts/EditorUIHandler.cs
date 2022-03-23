@@ -43,6 +43,7 @@ public class EditorUIHandler : MonoBehaviour
 
     void Start()
     {
+        FileBrowser.SetFilters(true, new FileBrowser.Filter("POI files", ".poi"));
         this.pointsOfInterest = new List<PointOfInterest>();
         this.pointsOfInterest.Add(new PointOfInterest());
         UpdateUI();
@@ -149,7 +150,12 @@ public class EditorUIHandler : MonoBehaviour
 
         if (FileBrowser.Success)
         {
-            POIWriter.WriteFile(FileBrowser.Result[0], this.pointsOfInterest);
+            string fileLocation = FileBrowser.Result[0];
+            if (!fileLocation.EndsWith(".poi"))
+            {
+                fileLocation += ".poi";
+            }
+            POIWriter.WriteFile(fileLocation, this.pointsOfInterest);
         }
     }
 
