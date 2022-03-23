@@ -68,6 +68,41 @@ public class EditorUIHandler : MonoBehaviour
         }
     }
 
+    private void AddNewPointOfInterest()
+    {
+        this.pointsOfInterest.Add(new PointOfInterest());
+        this.ChangeCurrentIndex(this.PointOfInterestCount - 1);
+    }
+
+    private void RemoveCurrentPointOfInterest()
+    {
+        if (this.PointOfInterestCount == 1)
+        {
+            Debug.LogError("Cannot remove the last PointOfInterest.");
+            return;
+        }
+
+        this.pointsOfInterest.RemoveAt(currentIndex);
+        if (this.currentIndex == this.PointOfInterestCount)
+        {
+            this.currentIndex--;
+        }
+
+        this.UpdateUI();
+    }
+
+    private void ChangeCurrentIndex(int index)
+    {
+        if (index < 0 || index >= this.PointOfInterestCount)
+        {
+            this.inp_currentPoi.text = (this.currentIndex + 1).ToString();
+            return;
+        }
+
+        this.currentIndex = index;
+        UpdateUI();
+    }
+
     private void UpdateUI()
     {
         this.inp_currentPoi.text = (this.currentIndex + 1).ToString();
@@ -104,18 +139,6 @@ public class EditorUIHandler : MonoBehaviour
         return imageLocations.ToList();
     }
 
-    private void ChangeCurrentIndex(int index)
-    {
-        if (index < 0 || index >= this.PointOfInterestCount)
-        {
-            this.inp_currentPoi.text = (this.currentIndex + 1).ToString();
-            return;
-        }
-
-        this.currentIndex = index;
-        UpdateUI();
-    }
-
     /// <summary>
     ///     Displays the file browser to select a save location. If one is selected, the POI file will be saved.
     /// </summary>
@@ -149,24 +172,12 @@ public class EditorUIHandler : MonoBehaviour
 
     public void OnAddClicked()
     {
-        this.pointsOfInterest.Add(new PointOfInterest());
-        this.ChangeCurrentIndex(this.PointOfInterestCount - 1);
+        this.AddNewPointOfInterest();
     }
 
     public void OnRemoveClicked()
     {
-        if (this.PointOfInterestCount == 1)
-        {
-            return;
-        }
-
-        this.pointsOfInterest.RemoveAt(currentIndex);
-        if (this.currentIndex == this.PointOfInterestCount)
-        {
-            this.currentIndex--;
-        }
-
-        this.UpdateUI();
+        this.RemoveCurrentPointOfInterest();
     }
 
     public void OnSaveClicked()
