@@ -54,7 +54,6 @@ public class InformationScreenController : MonoBehaviour
         foreach (var address in this.data.ImageLinks)
         {
             Texture2D texture = new Texture2D(2, 2);
-            this.imagesInMemory.Add(texture);
         }
 
        
