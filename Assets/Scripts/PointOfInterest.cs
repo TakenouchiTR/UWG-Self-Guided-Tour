@@ -44,6 +44,14 @@ public class PointOfInterest
     public double Longitude { get; set; }
 
     /// <summary>
+    ///     Gets the latitude and longitude as a <see cref="Coordinate"/>.
+    /// </summary>
+    /// <value>
+    ///     The coords.
+    /// </value>
+    public Coordinate Coords => new Coordinate(this.Latitude, this.Longitude);
+
+    /// <summary>
     ///     Gets or sets a value indicating whether this instance has AR target.
     /// </summary>
     /// <value>
