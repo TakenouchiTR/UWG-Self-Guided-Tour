@@ -26,9 +26,15 @@ public class MainSceneHandler : MonoBehaviour
 
     private void Start()
     {
+        this.sessionInformation = SessionInformation.GetInstance();
+
         this.InitializeMap();
-        string filePath = $"{Application.streamingAssetsPath}/PointsOfInterest.poi";
-        this.LoadFile(filePath);
+        if (!this.sessionInformation.LoadedFile)
+        {
+            string filePath = $"{Application.streamingAssetsPath}/PointsOfInterest.poi";
+            this.sessionInformation.LoadPointsOfInterest(filePath);
+        }
+        this.PlacePointsOfInterest();
     }
 
     private void InitializeMap()
@@ -38,16 +44,9 @@ public class MainSceneHandler : MonoBehaviour
         this.uwgMap = new Map(startCoordinate, endCoordinate);
     }
 
-    /// <summary>
-    ///     Loads the file.<br />
-    ///     Will be moved to the Singleton when it's implemented.
-    /// </summary>
-    /// <param name="filePath">The file path.</param>
-    private void LoadFile(string filePath)
+    private void PlacePointsOfInterest()
     {
-        List<PointOfInterest> pois = POIReader.ReadFile(filePath);
-
-        foreach (PointOfInterest poi in pois)
+        foreach (PointOfInterest poi in this.sessionInformation.PointsOfInterest)
         {
             this.PlacePoi(poi);
         }
@@ -74,6 +73,7 @@ public class MainSceneHandler : MonoBehaviour
 
     private void OnMapMarkerTapped(PointOfInterest poi) 
     {
+        this.sessionInformation.CurrentPointOfInterest = poi;
         this.UpdateUI(poi);
     }
 }
