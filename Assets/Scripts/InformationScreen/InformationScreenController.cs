@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-using File = UnityEngine.Windows.File;
+using System.IO;
 
 public class InformationScreenController : MonoBehaviour
 {
