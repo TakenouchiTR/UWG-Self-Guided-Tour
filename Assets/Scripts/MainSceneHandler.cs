@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 ///     Controls interactions within the MainScene.<br />
@@ -12,6 +13,7 @@ using TMPro;
 public class MainSceneHandler : MonoBehaviour
 {
     private Map uwgMap;
+    private SessionInformation sessionInformation;
 
     [SerializeField]
     private MapMarker mapMarkerPrefab;
@@ -75,5 +77,15 @@ public class MainSceneHandler : MonoBehaviour
     {
         this.sessionInformation.CurrentPointOfInterest = poi;
         this.UpdateUI(poi);
+    }
+
+    public void OnMoreInfoPressed()
+    {
+        if (this.sessionInformation.CurrentPointOfInterest == null)
+        {
+            Debug.Log("Point of Interest not selected");
+            return;
+        }
+        SceneManager.LoadScene(1);
     }
 }
