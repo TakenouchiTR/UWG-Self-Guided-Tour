@@ -1,8 +1,10 @@
-using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System;
+using UnityEngine.Android;
 
 /// <summary>
 ///     Controls interactions within the MainScene.<br />
@@ -13,6 +15,7 @@ using UnityEngine.SceneManagement;
 public class MainSceneHandler : MonoBehaviour
 {
     private Map uwgMap;
+    private MapMarker userMarker;
     private SessionInformation sessionInformation;
 
     [SerializeField]
@@ -31,12 +34,33 @@ public class MainSceneHandler : MonoBehaviour
         this.sessionInformation = SessionInformation.GetInstance();
 
         this.InitializeMap();
-        if (!this.sessionInformation.LoadedFile)
+        try 
         {
-            string filePath = $"{Application.streamingAssetsPath}/PointsOfInterest.poi";
-            this.sessionInformation.LoadPointsOfInterest(filePath);
+            if (!this.sessionInformation.LoadedFile)
+            {
+                BetterStreamingAssets.Initialize();
+                string filePath = "PointsOfInterest.poi";
+                this.sessionInformation.LoadPointsOfInterest(filePath);
+            }
         }
+        catch (Exception e)
+        {
+            this.txt_Preview.text = e.Message;
+            Debug.LogError(e.StackTrace);
+        }
+
         this.PlacePointsOfInterest();
+
+        if (Input.location.isEnabledByUser)
+        {
+            StartCoroutine(RunLocationService());
+        }
+        else
+        {
+            var callbacks = new PermissionCallbacks();
+            callbacks.PermissionGranted += PermissionCallbacks_PermissionGranted;
+            Permission.RequestUserPermission(Permission.FineLocation, callbacks);
+        }
     }
 
     private void InitializeMap()
@@ -52,6 +76,19 @@ public class MainSceneHandler : MonoBehaviour
         {
             this.PlacePoi(poi);
         }
+    }
+
+    private void PlaceUser()
+    {
+        Vector2 mapPosition = Vector2.zero;
+        this.userMarker = Instantiate(mapMarkerPrefab, raw_Map.transform); 
+        
+        mapPosition.x *= raw_Map.rectTransform.rect.width;
+        mapPosition.y *= -raw_Map.rectTransform.rect.height;
+
+        this.userMarker.Color = Color.blue;
+
+        this.userMarker.MoveToPosition(mapPosition);
     }
 
     private void PlacePoi(PointOfInterest poi)
@@ -71,6 +108,47 @@ public class MainSceneHandler : MonoBehaviour
     {
         this.txt_Name.text = poi.Name;
         this.txt_Preview.text = poi.PreviewDescription;
+    }
+
+    private IEnumerator RunLocationService()
+    {
+        Input.location.Start();
+
+        int maxWait = 20;
+        while (Input.location.status == LocationServiceStatus.Initializing && maxWait > 0)
+        {
+            yield return new WaitForSeconds(1);
+            maxWait--;
+        }
+
+        if (maxWait < 1 || Input.location.status == LocationServiceStatus.Failed)
+        {
+            yield break;
+        }
+
+        this.PlaceUser();
+
+        while (true)
+        {
+            this.UpdateUserPosition();
+            yield return new WaitForSeconds(1);
+        }
+    }
+
+    private void PermissionCallbacks_PermissionGranted(string obj)
+    {
+        StartCoroutine(this.RunLocationService());
+    }
+
+    private void UpdateUserPosition()
+    {
+        Coordinate curCoordinates = new Coordinate(Input.location.lastData.latitude, Input.location.lastData.longitude);
+        Vector2 mapPosition = this.uwgMap.GetPositionInMap(curCoordinates);
+
+        mapPosition.x *= raw_Map.rectTransform.rect.width;
+        mapPosition.y *= -raw_Map.rectTransform.rect.height;
+
+        this.userMarker.MoveToPosition(mapPosition);
     }
 
     private void OnMapMarkerTapped(PointOfInterest poi) 
