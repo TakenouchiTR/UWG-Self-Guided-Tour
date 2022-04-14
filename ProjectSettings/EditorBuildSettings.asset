@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/InformationScreen.unity
     guid: cf04610e03bf2674d9bf2ba3d62e0e71
+  - enabled: 1
+    path: Assets/Scenes/ScannerScene.unity
+    guid: c95d4fd6506f61741808061a8f680d0e
   m_configObjects: {}
