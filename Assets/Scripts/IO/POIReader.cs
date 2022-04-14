@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using UnityEngine;
 
 /// <summary>
 ///     Reads a list of <see cref="PointOfInterest"/> from a specified file location.<br />
@@ -20,12 +21,22 @@ public static class POIReader
     /// <exception cref="System.IO.FileNotFoundException"></exception>
     public static List<PointOfInterest> ReadFile(string fileLocation)
     {
+#if UNITY_ANDROID
+        if (!BetterStreamingAssets.FileExists(fileLocation))
+#else
+        fileLocation = $"{Application.streamingAssetsPath}/{fileLocation}";
         if (!File.Exists(fileLocation))
+#endif
         {
             throw new FileNotFoundException($"{fileLocation} not found");
         }
 
-        using BinaryReader reader = new BinaryReader(new FileStream(fileLocation, FileMode.Open));
+#if UNITY_ANDROID
+        Stream stream = BetterStreamingAssets.OpenRead(fileLocation);
+#else
+        Stream stream = new FileStream(fileLocation, FileMode.Open);
+#endif
+        using BinaryReader reader = new BinaryReader(stream);
         int version = reader.ReadInt32();
         reader.Close();
 
@@ -43,8 +54,12 @@ public static class POIReader
     private static List<PointOfInterest> ReadVersion1File(string fileLocation)
     {
         List<PointOfInterest> result = new List<PointOfInterest>();
-
-        using BinaryReader reader = new BinaryReader(new FileStream(fileLocation, FileMode.Open));
+#if UNITY_ANDROID
+        Stream stream = BetterStreamingAssets.OpenRead(fileLocation);
+#else
+        Stream stream = new FileStream(fileLocation, FileMode.Open);
+#endif
+        using BinaryReader reader = new BinaryReader(stream);
         //Skip past the version number
         reader.ReadInt32();
 
