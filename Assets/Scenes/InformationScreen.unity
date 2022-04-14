@@ -478,7 +478,7 @@ MonoBehaviour:
   previousButton: {fileID: 679126918}
   poiName: {fileID: 447232880}
   poiDescription: {fileID: 1035420810}
-  loadDemoButton: {fileID: 0}
+  backButton: {fileID: 573445613}
 --- !u!4 &484688739
 Transform:
   m_ObjectHideFlags: 0

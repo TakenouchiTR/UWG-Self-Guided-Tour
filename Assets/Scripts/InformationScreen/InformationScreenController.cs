@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System.IO;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 ///     Handles all functionality regarding the information screen, including loading and image scrolling.<br />
@@ -29,7 +30,7 @@ public class InformationScreenController : MonoBehaviour
     private TextMeshProUGUI poiDescription;
 
     [SerializeField]
-    private Button loadDemoButton;
+    private Button backButton;
 
     private PointOfInterest data;
 
@@ -39,24 +40,14 @@ public class InformationScreenController : MonoBehaviour
 
     private IList<Texture2D> imagesInMemory;
 
-    private static readonly PointOfInterest DemoData = new PointOfInterest {
-        Name = "Z6 Dining Hall",
-        Description = "Z6 Dining Hall is open Monday - Friday, and provides a lot of dining options." +
-                      "It is beloved by many students due to it's quality food and friendly service. " +
-                      "It is most famed for it's Fried Chicken Wednesdays. " +
-                      "Additionally, it has a piano on the ground floor that is very fun to play.",
-        ImageLinks = { "Photos/Z6DiningHall/Z6-1.png", "Photos/Z6DiningHall/Z6-2.png", "Photos/Z6DiningHall/Z6-3.png", "Photos/Z6DiningHall/Z6-4.png" }
-
-    };
-
     // Start is called before the first frame update
     void Start()
     {
-        this.loadDemoButton.onClick.AddListener(this.LoadDemoData);
         this.imagesInMemory = new List<Texture2D>();
         this.currentPhotoIndex = 0;
         this.nextButton.onClick.AddListener(this.HandleNext);
         this.previousButton.onClick.AddListener(this.HandlePrevious);
+        this.backButton.onClick.AddListener(this.ReturnToPreviousScreen);
         this.session = SessionInformation.GetInstance();
         this.data = this.session.CurrentPointOfInterest;
         this.LoadInformation();
@@ -80,12 +71,6 @@ public class InformationScreenController : MonoBehaviour
             this.currentPhotoIndex = 0;
         }
         this.SetCurrentImage();
-    }
-
-    private void LoadDemoData()
-    {
-        this.data = DemoData;
-        this.LoadInformation();
     }
 
     private void LoadInformation()
@@ -112,5 +97,10 @@ public class InformationScreenController : MonoBehaviour
     private void SetCurrentImage()
     {
         this.currentImage.texture = this.imagesInMemory[this.currentPhotoIndex];
+    }
+
+    private void ReturnToPreviousScreen()
+    {
+        SceneManager.LoadScene(0);
     }
 }
