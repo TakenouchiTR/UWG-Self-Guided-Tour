@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QCARConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="qcar_config.xsd">
+  <Tracking>
+    <ImageTarget name="OLD-AUDITORIUM-WOMEN-FRONT-STAGE" size="0.130000 0.130000" />
+    <ImageTarget name="BONNER-FAMILY-TREE" size="0.130000 0.130000" />
+    <ImageTarget name="MELSON-HALL-PLANNING" size="0.130000 0.130000" />
+    <ImageTarget name="BONNER-HOUSE-UNDER-CONSTRUCTION" size="0.130000 0.130000" />
+  </Tracking>
+</QCARConfig>
