@@ -13,6 +13,12 @@ public class MapMarker : MonoBehaviour
     [SerializeField]
     private Image img_Marker;
 
+    public Color Color
+    {
+        get => this.gameObject.GetComponent<Image>().color;
+        set => this.gameObject.GetComponent<Image>().color = value;
+    }
+
     /// <summary>
     ///     Gets or sets the <see cref="PointOfInterest"/>.
     /// </summary>
