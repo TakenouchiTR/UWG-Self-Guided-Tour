@@ -5,6 +5,12 @@ using TMPro;
 using UnityEngine.UI;
 using System.IO;
 
+/// <summary>
+///     Handles all functionality regarding the information screen, including loading and image scrolling.<br />
+///     <br />
+///     Author: Alexander Ayers<br />
+///     Version: Spring 2022
+/// </summary>
 public class InformationScreenController : MonoBehaviour
 {
     [SerializeField]
@@ -29,6 +35,8 @@ public class InformationScreenController : MonoBehaviour
 
     private int currentPhotoIndex;
 
+    private SessionInformation session;
+
     private IList<Texture2D> imagesInMemory;
 
     private static readonly PointOfInterest DemoData = new PointOfInterest {
@@ -44,41 +52,49 @@ public class InformationScreenController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        this.loadDemoButton.onClick.AddListener(this.loadDemoData);
+        this.loadDemoButton.onClick.AddListener(this.LoadDemoData);
         this.imagesInMemory = new List<Texture2D>();
         this.currentPhotoIndex = 0;
-        this.nextButton.onClick.AddListener(this.handleNext);
-        this.previousButton.onClick.AddListener(this.handlePrevious);
+        this.nextButton.onClick.AddListener(this.HandleNext);
+        this.previousButton.onClick.AddListener(this.HandlePrevious);
+        this.session = SessionInformation.GetInstance();
+        this.data = this.session.CurrentPointOfInterest;
+        this.LoadInformation();
     }
 
-    private void handlePrevious()
+    private void HandlePrevious()
     {
         this.currentPhotoIndex--;
         if (this.currentPhotoIndex < 0)
         {
             this.currentPhotoIndex = this.imagesInMemory.Count - 1;
         }
-        this.setCurrentImage();
+        this.SetCurrentImage();
     }
 
-    private void handleNext()
+    private void HandleNext()
     {
         this.currentPhotoIndex++;
         if (this.currentPhotoIndex >= this.imagesInMemory.Count)
         {
             this.currentPhotoIndex = 0;
         }
-        this.setCurrentImage();
+        this.SetCurrentImage();
     }
 
-    private void loadDemoData()
+    private void LoadDemoData()
     {
         this.data = DemoData;
+        this.LoadInformation();
+    }
+
+    private void LoadInformation()
+    {
         this.poiName.text = this.data.Name;
         this.poiDescription.text = this.data.Description;
-        foreach (var address in this.data.ImageLinks)
+        foreach (string address in this.data.ImageLinks)
         {
-            String filePath = $"{Application.streamingAssetsPath}/{address}";
+            string filePath = $"{Application.streamingAssetsPath}/{address}";
 
             if (File.Exists(filePath))
             {
@@ -90,11 +106,10 @@ public class InformationScreenController : MonoBehaviour
             }
         }
 
-        this.setCurrentImage();
-
+        this.SetCurrentImage();
     }
 
-    private void setCurrentImage()
+    private void SetCurrentImage()
     {
         this.currentImage.texture = this.imagesInMemory[this.currentPhotoIndex];
     }
