@@ -407,7 +407,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 112
+  m_fontSize: 76.45
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1240,6 +1240,7 @@ MonoBehaviour:
   txt_Name: {fileID: 275753156}
   txt_Preview: {fileID: 1648684362}
   btn_MoreInfo: {fileID: 1524560800}
+  filePath: PointsOfInterest-Official.poi
 --- !u!4 &1901829076
 Transform:
   m_ObjectHideFlags: 0

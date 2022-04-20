@@ -28,6 +28,8 @@ public class MainSceneHandler : MonoBehaviour
     private TextMeshProUGUI txt_Preview;
     [SerializeField]
     private Button btn_MoreInfo;
+    [SerializeField] 
+    private string filePath;
 
     private void Start()
     {
@@ -39,8 +41,7 @@ public class MainSceneHandler : MonoBehaviour
             if (!this.sessionInformation.LoadedFile)
             {
                 BetterStreamingAssets.Initialize();
-                string filePath = "PointsOfInterest.poi";
-                this.sessionInformation.LoadPointsOfInterest(filePath);
+                this.sessionInformation.LoadPointsOfInterest(this.filePath);
             }
         }
         catch (Exception e)
