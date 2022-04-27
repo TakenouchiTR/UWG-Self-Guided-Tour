@@ -30,6 +30,8 @@ public class SessionInformation
 
     public bool LoadedFile { get; private set; }
 
+    public float LastMapPosition { get; set; }
+
     private SessionInformation()
     {
         this.PointsOfInterest = new List<PointOfInterest>();

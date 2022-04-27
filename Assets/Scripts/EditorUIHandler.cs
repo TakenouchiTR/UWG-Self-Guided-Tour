@@ -168,7 +168,7 @@ public class EditorUIHandler : MonoBehaviour
         if (FileBrowser.Success)
         {
             this.currentIndex = 0;
-            this.pointsOfInterest = POIReader.ReadFile(FileBrowser.Result[0]);
+            this.pointsOfInterest = POIReader.ReadFileInEditor(FileBrowser.Result[0]);
 
             this.UpdateUI();
         }
