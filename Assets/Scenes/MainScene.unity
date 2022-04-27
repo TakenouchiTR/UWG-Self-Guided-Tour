@@ -1274,7 +1274,7 @@ MonoBehaviour:
   txt_Preview: {fileID: 1648684362}
   btn_MoreInfo: {fileID: 1524560800}
   contentPanel: {fileID: 166435448}
-  filePath: PointsOfInterest-Official.poi
+  filePath: PointsOfInterest-Official-Working.poi
   scrollableMap: {fileID: 2027539800}
 --- !u!4 &1901829076
 Transform:
