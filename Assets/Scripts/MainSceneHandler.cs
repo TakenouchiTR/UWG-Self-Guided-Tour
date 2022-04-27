@@ -28,15 +28,19 @@ public class MainSceneHandler : MonoBehaviour
     private TextMeshProUGUI txt_Preview;
     [SerializeField]
     private Button btn_MoreInfo;
-    [SerializeField] 
+    [SerializeField]
+    private PoiContentPanel contentPanel;
+    [SerializeField]
     private string filePath;
+    [SerializeField]
+    private ScrollableMap scrollableMap;
 
     private void Start()
     {
         this.sessionInformation = SessionInformation.GetInstance();
 
         this.InitializeMap();
-        try 
+        try
         {
             if (!this.sessionInformation.LoadedFile)
             {
@@ -82,8 +86,8 @@ public class MainSceneHandler : MonoBehaviour
     private void PlaceUser()
     {
         Vector2 mapPosition = Vector2.zero;
-        this.userMarker = Instantiate(mapMarkerPrefab, raw_Map.transform); 
-        
+        this.userMarker = Instantiate(mapMarkerPrefab, raw_Map.transform);
+
         mapPosition.x *= raw_Map.rectTransform.rect.width;
         mapPosition.y *= -raw_Map.rectTransform.rect.height;
 
@@ -152,9 +156,10 @@ public class MainSceneHandler : MonoBehaviour
         this.userMarker.MoveToPosition(mapPosition);
     }
 
-    private void OnMapMarkerTapped(PointOfInterest poi) 
+    private void OnMapMarkerTapped(PointOfInterest poi)
     {
         this.sessionInformation.CurrentPointOfInterest = poi;
+        this.contentPanel.DisplayPanel();
         this.UpdateUI(poi);
     }
 
@@ -166,5 +171,10 @@ public class MainSceneHandler : MonoBehaviour
             return;
         }
         SceneManager.LoadScene(1);
+    }
+
+    public void OnMapTapped()
+    {
+        this.contentPanel.HidePanel();
     }
 }
