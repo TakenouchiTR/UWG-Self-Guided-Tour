@@ -39,6 +39,10 @@ public class MainSceneHandler : MonoBehaviour
     {
         this.sessionInformation = SessionInformation.GetInstance();
 
+        Vector3 mapPosition = this.scrollableMap.transform.position;
+        mapPosition.x = sessionInformation.LastMapPosition + Screen.width / 2;
+        this.scrollableMap.transform.position = mapPosition;
+
         this.InitializeMap();
         try
         {
@@ -170,7 +174,14 @@ public class MainSceneHandler : MonoBehaviour
             Debug.Log("Point of Interest not selected");
             return;
         }
+        this.sessionInformation.LastMapPosition = this.scrollableMap.transform.position.x - Screen.width / 2;
         SceneManager.LoadScene(1);
+    }
+
+    public void OnScannerClicked()
+    {
+        this.sessionInformation.LastMapPosition = this.scrollableMap.transform.position.x - Screen.width / 2;
+        SceneManager.LoadScene(2);
     }
 
     public void OnMapTapped()
