@@ -18,7 +18,6 @@ public class ScrollableMap : MonoBehaviour
     private void Start()
     {
         this.rectTransform = base.GetComponent<RectTransform>();
-        this.largeCollider.size = new Vector2(this.rectTransform.rect.width, this.rectTransform.rect.height);
     }
 
     // Update is called once per frame
@@ -43,18 +42,6 @@ public class ScrollableMap : MonoBehaviour
                 this.transform.position = newPosition;
             }
         }
-    }
-
-    public void makecollidernotmslall()
-    {
-        this.largeCollider.size = new Vector2(this.rectTransform.rect.width, this.rectTransform.rect.height);
-        this.largeCollider.offset = Vector2.zero;
-    }
-
-    public void makecollidernormbitg()
-    {
-        this.largeCollider.size = new Vector2(this.rectTransform.rect.width, this.rectTransform.rect.height * .3f);
-        this.largeCollider.offset = Vector2.up * .35f * this.rectTransform.rect.height;
     }
 
     private void OnMouseDown()
