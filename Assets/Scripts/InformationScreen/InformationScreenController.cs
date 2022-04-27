@@ -79,6 +79,16 @@ public class InformationScreenController : MonoBehaviour
         this.poiDescription.text = this.data.Description;
         foreach (string address in this.data.ImageLinks)
         {
+#if UNITY_ANDROID
+            if(BetterStreamingAssets.FileExists(address))
+            {
+                var texture = new Texture2D(2, 2);
+
+                byte[] file = BetterStreamingAssets.ReadAllBytes(address);
+                texture.LoadImage(file);
+                this.imagesInMemory.Add(texture);
+            }
+#else
             string filePath = $"{Application.streamingAssetsPath}/{address}";
 
             if (File.Exists(filePath))
@@ -89,6 +99,7 @@ public class InformationScreenController : MonoBehaviour
                 texture.LoadImage(file);
                 this.imagesInMemory.Add(texture);
             }
+#endif
         }
 
         this.SetCurrentImage();
