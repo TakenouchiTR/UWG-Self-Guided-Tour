@@ -32,6 +32,9 @@ public class InformationScreenController : MonoBehaviour
     [SerializeField]
     private Button backButton;
 
+    [SerializeField]
+    private TextMeshProUGUI hasScanTargetText;
+
     private PointOfInterest data;
 
     private int currentPhotoIndex;
@@ -77,6 +80,7 @@ public class InformationScreenController : MonoBehaviour
     {
         this.poiName.text = this.data.Name;
         this.poiDescription.text = this.data.Description;
+        this.hasScanTargetText.enabled = this.data.HasARTarget;
         foreach (string address in this.data.ImageLinks)
         {
 #if UNITY_ANDROID

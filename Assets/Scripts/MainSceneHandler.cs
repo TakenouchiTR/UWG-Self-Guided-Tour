@@ -34,7 +34,8 @@ public class MainSceneHandler : MonoBehaviour
     private string filePath;
     [SerializeField]
     private ScrollableMap scrollableMap;
-
+    [SerializeField] 
+    private TextMeshProUGUI txt_HasScanTarget;
     private void Start()
     {
         this.sessionInformation = SessionInformation.GetInstance();
@@ -42,7 +43,6 @@ public class MainSceneHandler : MonoBehaviour
         Vector3 mapPosition = this.scrollableMap.transform.position;
         mapPosition.x = sessionInformation.LastMapPosition + Screen.width / 2;
         this.scrollableMap.transform.position = mapPosition;
-
         this.InitializeMap();
         try
         {
@@ -117,6 +117,7 @@ public class MainSceneHandler : MonoBehaviour
     {
         this.txt_Name.text = poi.Name;
         this.txt_Preview.text = poi.PreviewDescription;
+        this.txt_HasScanTarget.enabled = poi.HasARTarget;
     }
 
     private IEnumerator RunLocationService()
