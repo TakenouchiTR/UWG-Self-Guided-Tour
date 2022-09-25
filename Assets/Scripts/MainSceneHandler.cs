@@ -94,6 +94,7 @@ public class MainSceneHandler : MonoBehaviour
 
         mapPosition.x *= raw_Map.rectTransform.rect.width;
         mapPosition.y *= -raw_Map.rectTransform.rect.height;
+        //TODO: Adjust placement of User.
 
         this.userMarker.Color = Color.blue;
 
