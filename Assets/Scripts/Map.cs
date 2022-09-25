@@ -8,6 +8,9 @@ using UnityEngine;
 /// </summary>
 public struct Map
 {
+    private const float LongitudeBuffer = 0.0002f;
+    private const float LatitudeBuffer = 0.0005f;
+
     /// <summary>
     ///     Gets or sets the start coordinate, representing the top latitude and the left longitude
     /// </summary>
@@ -40,6 +43,7 @@ public struct Map
     /// </value>
     public double Height => this.StartCoordinate.Latitude - this.EndCoordinate.Latitude;
 
+
     /// <summary>
     ///     Initializes a new instance of the <see cref="Map"/> struct with specified start and end <see cref="Coordinate"/>s.<br />
     ///     <br />
@@ -71,8 +75,8 @@ public struct Map
     {
         Vector2 result = new Vector2();
 
-        result.x = (float)((coord.Longitude - this.StartCoordinate.Longitude) / this.Width);
-        result.y = (float)((this.StartCoordinate.Latitude - coord.Latitude) / this.Height);
+        result.x = (float)((coord.Longitude - this.StartCoordinate.Longitude + LongitudeBuffer) / this.Width);
+        result.y = (float)((this.StartCoordinate.Latitude - coord.Latitude + LatitudeBuffer) / this.Height) ;
 
         return result;
     }

@@ -109,6 +109,7 @@ public class MainSceneHandler : MonoBehaviour
         mapPosition.x *= raw_Map.rectTransform.rect.width;
         mapPosition.y *= -raw_Map.rectTransform.rect.height;
 
+
         instance.MoveToPosition(mapPosition);
         instance.Tapped.AddListener(this.OnMapMarkerTapped);
     }
