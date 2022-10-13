@@ -155,7 +155,7 @@ public class MainSceneHandler : MonoBehaviour
     private void UpdateUserPosition()
     {
         Coordinate curCoordinates = new Coordinate(Input.location.lastData.latitude, Input.location.lastData.longitude);
-        Vector2 mapPosition = this.uwgMap.GetPositionInMap(curCoordinates);
+        Vector2 mapPosition = this.uwgMap.GetPositionInMap(curCoordinates, true);
 
         mapPosition.x *= raw_Map.rectTransform.rect.width;
         mapPosition.y *= -raw_Map.rectTransform.rect.height;

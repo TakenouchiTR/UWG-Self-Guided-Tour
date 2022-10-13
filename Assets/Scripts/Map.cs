@@ -70,13 +70,22 @@ public struct Map
     ///     Postcondition: None
     /// </summary>
     /// <param name="coord">The coord.</param>
+    /// <param name="isPlayer">Whether the position is for the player or not.</param>
     /// <returns>A <see cref="Vector2"/> representing the relative position of the coordinate as percentages.</returns>
-    public Vector2 GetPositionInMap(Coordinate coord)
+    public Vector2 GetPositionInMap(Coordinate coord, bool isPlayer)
     {
         Vector2 result = new Vector2();
+        if (isPlayer)
+        {
+            result.x = (float)((coord.Longitude - this.StartCoordinate.Longitude + LongitudeBuffer - 0.0001f) / this.Width);
+            result.y = (float)((this.StartCoordinate.Latitude - coord.Latitude + LatitudeBuffer - 0.0001f) / this.Height);
+        }
+        else
+        {
+            result.x = (float)((coord.Longitude - this.StartCoordinate.Longitude + LongitudeBuffer) / this.Width);
+            result.y = (float)((this.StartCoordinate.Latitude - coord.Latitude + LatitudeBuffer) / this.Height);
+        }
 
-        result.x = (float)((coord.Longitude - this.StartCoordinate.Longitude + LongitudeBuffer) / this.Width);
-        result.y = (float)((this.StartCoordinate.Latitude - coord.Latitude + LatitudeBuffer) / this.Height) ;
 
         return result;
     }
