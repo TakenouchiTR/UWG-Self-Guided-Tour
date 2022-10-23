@@ -103,7 +103,7 @@ public class MainSceneHandler : MonoBehaviour
 
     private void PlacePoi(PointOfInterest poi)
     {
-        Vector2 mapPosition = uwgMap.GetPositionInMap(poi.Coords);
+        Vector2 mapPosition = uwgMap.GetPositionInMap(poi.Coords, false);
         MapMarker instance = Instantiate(mapMarkerPrefab, raw_Map.transform);
 
         instance.PoI = poi;
