@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System.IO;
+using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
 /// <summary>
@@ -35,6 +36,18 @@ public class InformationScreenController : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI hasScanTargetText;
 
+    [SerializeField]
+    private string audioLocation;
+
+    [SerializeField] 
+    private Button playButton;
+
+    [SerializeField]
+    private Button stopButton;
+
+    [SerializeField]
+    private Button pauseButton;
+
     private PointOfInterest data;
 
     private int currentPhotoIndex;
@@ -43,17 +56,50 @@ public class InformationScreenController : MonoBehaviour
 
     private IList<Texture2D> imagesInMemory;
 
+    [SerializeField]
+    private AudioSource audio;
+
     // Start is called before the first frame update
     void Start()
     {
+        this.audio.Stop();
         this.imagesInMemory = new List<Texture2D>();
         this.currentPhotoIndex = 0;
         this.nextButton.onClick.AddListener(this.HandleNext);
         this.previousButton.onClick.AddListener(this.HandlePrevious);
         this.backButton.onClick.AddListener(this.ReturnToPreviousScreen);
+        this.playButton.onClick.AddListener(this.PlayAudio);
+        this.stopButton.onClick.AddListener(this.StopAudio);
+        this.pauseButton.onClick.AddListener(this.PauseAudio);
         this.session = SessionInformation.GetInstance();
         this.data = this.session.CurrentPointOfInterest;
         this.LoadInformation();
+        
+
+    }
+
+    private void PauseAudio()
+    {
+        if (this.audio.isPlaying)
+        {
+            this.audio.Pause();
+        }
+    }
+
+    private void StopAudio()
+    {
+        if (this.audio.isPlaying)
+        {
+            this.audio.Stop();
+        }
+    }
+
+    private void PlayAudio()
+    {
+        if (!this.audio.isPlaying)
+        {
+            this.audio.Play();
+        }
     }
 
     private void HandlePrevious()
