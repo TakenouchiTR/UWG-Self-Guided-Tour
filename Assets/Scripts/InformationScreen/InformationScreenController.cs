@@ -36,9 +36,6 @@ public class InformationScreenController : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI hasScanTargetText;
 
-    [SerializeField]
-    private string audioLocation;
-
     [SerializeField] 
     private Button playButton;
 
@@ -47,6 +44,9 @@ public class InformationScreenController : MonoBehaviour
 
     [SerializeField]
     private Button pauseButton;
+
+    [SerializeField] 
+    private AudioClip oldAcademicBuildingAudio;
 
     private PointOfInterest data;
 
@@ -58,6 +58,8 @@ public class InformationScreenController : MonoBehaviour
 
     [SerializeField]
     private AudioSource audio;
+
+    private IDictionary<string, AudioClip> audioClips;
 
     // Start is called before the first frame update
     void Start()
@@ -74,8 +76,27 @@ public class InformationScreenController : MonoBehaviour
         this.session = SessionInformation.GetInstance();
         this.data = this.session.CurrentPointOfInterest;
         this.LoadInformation();
-        
+        this.SetupAudioForScreen();
 
+
+    }
+
+    private void SetupAudioForScreen()
+    {
+        this.audioClips = new Dictionary<string, AudioClip> {
+            { "Old Academic Building", this.oldAcademicBuildingAudio }
+        };
+
+        if (this.audioClips.ContainsKey(this.data.Name))
+        {
+            this.audio.clip = this.audioClips[this.data.Name];
+        }
+        else
+        {
+            this.playButton.gameObject.SetActive(false);
+            this.stopButton.gameObject.SetActive(false);
+            this.pauseButton.gameObject.SetActive(false);
+        }
     }
 
     private void PauseAudio()
