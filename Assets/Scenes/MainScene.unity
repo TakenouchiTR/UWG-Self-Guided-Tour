@@ -1299,7 +1299,7 @@ MonoBehaviour:
   txt_Preview: {fileID: 1648684362}
   btn_MoreInfo: {fileID: 1524560800}
   contentPanel: {fileID: 166435448}
-  filePath: PointsOfInterest-Official-Working.poi
+  filePath: PointsOfInterest-Official-Working-SecondCopy.poi
   scrollableMap: {fileID: 2027539800}
   txt_HasScanTarget: {fileID: 2073974404}
 --- !u!4 &1901829076
