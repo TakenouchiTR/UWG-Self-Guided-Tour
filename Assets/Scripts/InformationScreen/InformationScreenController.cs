@@ -48,6 +48,9 @@ public class InformationScreenController : MonoBehaviour
     [SerializeField] 
     private AudioClip oldAcademicBuildingAudio;
 
+    [SerializeField]
+    private AudioClip melsonHallAudio;
+
     private PointOfInterest data;
 
     private int currentPhotoIndex;
@@ -84,7 +87,8 @@ public class InformationScreenController : MonoBehaviour
     private void SetupAudioForScreen()
     {
         this.audioClips = new Dictionary<string, AudioClip> {
-            { "Old Academic Building", this.oldAcademicBuildingAudio }
+            { "Old Academic Building", this.oldAcademicBuildingAudio },
+            { "Melson Hall", this.melsonHallAudio }
         };
 
         if (this.audioClips.ContainsKey(this.data.Name))
